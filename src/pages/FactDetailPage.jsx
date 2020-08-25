@@ -6,48 +6,48 @@ import UserDetail from "../components/UserDetail";
 
 export default function FactDetailPage(props) {
   let [factData, setFactData] = useState({});
-  let [userFactData, setUserFactData] = useState([]);
-  const factId = props.match.params.id;
+  // let [userFactData, setUserFactData] = useState([]);
+  const [factName, setFactName] = useState("");
 
   let index;
 
-  // let index;
-
   function fetchFacts() {
-    let factId = props.match.params.id;
-    fetch(`https://cat-fact.herokuapp.com/facts/${factId}`)
-      .then((res) => res.json())
-      .then((result) => {
-        setFactData(result);
-      });
-  }
-
-  function fetchUser() {
+    const factId = props.match.params.id;
     fetch("https://cat-fact.herokuapp.com/facts")
       .then((res) => res.json())
       .then((result) => {
-        setUserFactData(result.all);
+        setFactData(result.all[factId]);
+        setFactName(
+          result.all[factId].user.name.first +
+            " " +
+            result.all[factId].user.name.last
+        );
       });
   }
-  function findIndexData() {
-    const id = factId;
-    index = userFactData
-      .map((item, i) => {
-        return item._id;
-      })
-      .indexOf(id);
 
-    let theUser = userFactData[index];
-    // console.log(theUser);
-    if (theUser !== undefined) {
-      return theUser;
-    }
-  }
+  // function fetchUser() {
+  //   fetch("https://cat-fact.herokuapp.com/facts")
+  //     .then((res) => res.json())
+  //     .then((result) => {
+  //       setUserFactData(result.all);
+  //     });
+  // }
+  // function findIndexData() {
+  //   const id = factId;
+  //   index = userFactData
+  //     .map((item, i) => {
+  //       return item._id;
+  //     })
+  //     .indexOf(id);
+
+  //   return userFactData[index];
+  // }
   // fetchUser();
 
   useEffect(() => {
     fetchFacts();
-    fetchUser();
+
+    // fetchUser();
     // findIndexData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -55,8 +55,11 @@ export default function FactDetailPage(props) {
     <div>
       <Link to={`/`}>Home</Link>
       <h1>Fact Detail Page</h1>
-      <CardItemDetail props={factData} id={factId} />
-      <UserDetail props={findIndexData()} />
+      <CardItemDetail
+        text={factData.text}
+        name={factName}
+        upvotes={factData.upvotes}
+      />
     </div>
   );
 }
