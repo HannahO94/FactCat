@@ -1,5 +1,6 @@
 import React from "react";
-import UserDetail from "../components/UserDetail";
+import { useEffect, useState } from "react";
+import UserDetail from "./UserDetail";
 
 export default function CardItemDetail({ props }) {
   return (
@@ -7,7 +8,7 @@ export default function CardItemDetail({ props }) {
       <div className="card">
         <div className="card-body">
           <h5 className="card-title">{props.text}</h5>
-          {/* <UserDetail props={props.user} /> */}
+
           <p></p>
         </div>
       </div>

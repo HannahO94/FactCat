@@ -9,7 +9,6 @@ export default function CardList() {
     fetch("https://cat-fact.herokuapp.com/facts")
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
         setCatList(result);
       });
   }
